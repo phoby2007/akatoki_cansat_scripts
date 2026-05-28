@@ -43,7 +43,8 @@ if __name__ == "__main__":
     while True:
         x, y = corn_detection(capture)
         print(f"Cone detected at: ({x}, {y})")
-        if cv2.waitKey(1) != -1:
+        key = cv2.waitKey(1) #lp stop
+        if key == 27:
             break
     capture.release()
     cv2.destroyAllWindows()
