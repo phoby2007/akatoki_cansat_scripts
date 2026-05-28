@@ -39,7 +39,7 @@ def corn_detection(cap):
     return cx, cy
 
 if __name__ == "__main__":
-    capture = cv2.VideoCapture(0)
+    capture = cv2.VideoCapture("/dev/video1", cv2.CAP_V4L2)
     while True:
         x, y = corn_detection(capture)
         print(f"Cone detected at: ({x}, {y})")
