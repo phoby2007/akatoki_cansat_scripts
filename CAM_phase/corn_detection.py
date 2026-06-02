@@ -15,7 +15,7 @@ def cap_to_fog(src, ratio = 0.1):
     return resized
 
 
-def corn_detection(cap):
+def corn_detection(cap, camera_res):
 
     if cap is None:
         capstatus = False
@@ -33,7 +33,7 @@ def corn_detection(cap):
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
     capimg = cv2.inRange(capimg, (lower_hue, 100, 0), (upper_hue, 255, 255)) #赤色フィルタ
-    shapeh, shapew = full_res
+    shapeh, shapew = camera_res
 
     M = cv2.moments(capimg)
 
