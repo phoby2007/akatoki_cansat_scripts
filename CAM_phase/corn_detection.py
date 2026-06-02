@@ -1,5 +1,8 @@
+#インスタンス生成は関数呼び出し前に行うこと
+
 import cv2
 import numpy as np
+from picamera2 import Picamera2
 
 resize_rate = 0.10
 detect_threshold = 0.008  # コーン検出の閾値（要調整）
@@ -14,7 +17,11 @@ def cap_to_fog(src, ratio = 0.1):
 
 def corn_detection(cap):
 
-    camstatus, capimg = cap.read()
+    if cap is None:
+        capstatus = False
+    else:
+        capstatus = True
+    capimg = cap.copy()
 
     capimg = cv2.cvtColor(capimg, cv2.COLOR_BGR2HSV) #RGBtoHSV
 
@@ -39,12 +46,15 @@ def corn_detection(cap):
     return cx, cy
 
 if __name__ == "__main__":
-    capture = cv2.VideoCapture("/dev/video1", cv2.CAP_V4L2)
+    camera = Picamera2()
+    camera.configure(camera.create_video_configuration()) # 映像用に設定
+    camera.start()
+
     while True:
-        x, y = corn_detection(capture)
+        x, y = corn_detection(camera.capture_array()) # カメラから画像を取得してコーン検出
         print(f"Cone detected at: ({x}, {y})")
         key = cv2.waitKey(1) #lp stop
         if key == 27:
             break
-    capture.release()
+    camera.stop()
     cv2.destroyAllWindows()
