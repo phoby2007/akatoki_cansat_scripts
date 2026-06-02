@@ -43,7 +43,7 @@ def corn_detection(cap):
     else:
         cx, cy = -1, -1 
 
-    return cx, cy
+    return cx, cy, capstatus
 
 if __name__ == "__main__":
     camera = Picamera2()
