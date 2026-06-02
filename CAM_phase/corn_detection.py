@@ -15,7 +15,7 @@ def cap_to_fog(src, ratio = 0.1):
     return resized
 
 
-def corn_detection(cap, camera_res):
+def corn_detection(cap):
 
     if cap is None:
         capstatus = False
@@ -33,7 +33,7 @@ def corn_detection(cap, camera_res):
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
     capimg = cv2.inRange(capimg, (lower_hue, 100, 0), (upper_hue, 255, 255)) #赤色フィルタ
-    shapew, shapeh = camera_res[0], camera_res[1]
+    shapeh, shapew = capimg.shape
 
     M = cv2.moments(capimg)
     print(M["m00"]/255, shapeh * shapew * detect_threshold) # デバッグ用 - コーン検出の閾値設定に役立てる
@@ -50,10 +50,9 @@ if __name__ == "__main__":
     camera = Picamera2()
     camera.configure(camera.create_video_configuration())
     camera.start()
-    full_res = camera.camera_properties["PixelArraySize"]
 
     while True:
-        x, y, status = corn_detection(camera.capture_array(), full_res) # カメラから画像を取得してコーン検出
+        x, y, status = corn_detection(camera.capture_array()) # カメラから画像を取得してコーン検出
         print(f"Cone detected at: ({x}, {y})")
         key = cv2.waitKey(1) #lp stop
         if key == 27:
