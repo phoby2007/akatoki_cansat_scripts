@@ -33,7 +33,7 @@ def corn_detection(cap, camera_res):
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
     capimg = cv2.inRange(capimg, (lower_hue, 100, 0), (upper_hue, 255, 255)) #赤色フィルタ
-    shapeh, shapew = camera_res
+    shapew, shapeh = camera_res[0], camera_res[1]
 
     M = cv2.moments(capimg)
     print(M["m00"]/255, shapeh * shapew * detect_threshold) # デバッグ用 - コーン検出の閾値設定に役立てる
