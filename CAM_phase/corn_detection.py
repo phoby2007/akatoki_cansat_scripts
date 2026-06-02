@@ -33,7 +33,7 @@ def corn_detection(cap):
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
     capimg = cv2.inRange(capimg, (lower_hue, 100, 0), (upper_hue, 255, 255)) #赤色フィルタ
-    shapeh, shapew = capimg.shape
+    shapeh, shapew = full_res
 
     M = cv2.moments(capimg)
 
@@ -47,13 +47,13 @@ def corn_detection(cap):
 
 if __name__ == "__main__":
     camera = Picamera2()
-    camera.configure(camera.create_video_configuration()) # 映像用に設定
+    camera.configure(camera.create_video_configuration())
     camera.start()
+    full_res = camera.camera_properties["PixelArraySize"]
 
     while True:
-        x, y, status = corn_detection(camera.capture_array()) # カメラから画像を取得してコーン検出
-        print(f"Cone detected at: ({x}, {y})")
-        print(f"Camera status: {status}")
+        x, y, status = corn_detection(camera.capture_array(), full_res) # カメラから画像を取得してコーン検出
+        print(f"Cone detected at: ({x}, {y}), pic_size : {full_res}")
         key = cv2.waitKey(1) #lp stop
         if key == 27:
             break
