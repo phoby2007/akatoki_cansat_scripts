@@ -51,8 +51,9 @@ if __name__ == "__main__":
     camera.start()
 
     while True:
-        x, y = corn_detection(camera.capture_array()) # カメラから画像を取得してコーン検出
+        x, y, status = corn_detection(camera.capture_array()) # カメラから画像を取得してコーン検出
         print(f"Cone detected at: ({x}, {y})")
+        print(f"Camera status: {status}")
         key = cv2.waitKey(1) #lp stop
         if key == 27:
             break
