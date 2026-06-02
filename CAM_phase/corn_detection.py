@@ -36,6 +36,7 @@ def corn_detection(cap, camera_res):
     shapeh, shapew = camera_res
 
     M = cv2.moments(capimg)
+    print(M["m00"]/255, shapeh * shapew * detect_threshold) # デバッグ用 - コーン検出の閾値設定に役立てる
 
     if M["m00"] / 255 > shapeh * shapew * detect_threshold: # コーン検出閾値設定 - 要調整
         cx = int(M["m10"] / M["m00"])
@@ -53,7 +54,7 @@ if __name__ == "__main__":
 
     while True:
         x, y, status = corn_detection(camera.capture_array(), full_res) # カメラから画像を取得してコーン検出
-        print(f"Cone detected at: ({x}, {y}), pic_size : {full_res}")
+        print(f"Cone detected at: ({x}, {y})")
         key = cv2.waitKey(1) #lp stop
         if key == 27:
             break
