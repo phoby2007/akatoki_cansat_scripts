@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 from picamera2 import Picamera2
+import time
 
 resize_rate = 0.10
 detect_threshold = 0.001  # コーン検出の閾値（要調整）
@@ -32,8 +33,8 @@ def corn_detection(cap):
     capimg = cv2.merge((h, s, v))
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
-    mask1 = cv2.inRange(capimg, (0, 100, 140), (lower_hue, 255, 255)) #赤色フィルタ
-    mask2 = cv2.inRange(capimg, (upper_hue, 100, 140), (180, 255, 255)) #赤色フィルタ
+    mask1 = cv2.inRange(capimg, (0, 80, 5), (lower_hue, 255, 255)) #赤色フィルタ
+    mask2 = cv2.inRange(capimg, (upper_hue, 80, 50), (180, 255, 255)) #赤色フィルタ
     capimg = cv2.bitwise_or(mask1, mask2)
     shapeh, shapew = capimg.shape
 
@@ -58,5 +59,6 @@ if __name__ == "__main__":
         key = cv2.waitKey(1) #lp stop
         if key == 27:
             break
+        time.sleep(0.1)  # ループの間隔を調整（必要に応じて変更）
     camera.stop()
     cv2.destroyAllWindows()
