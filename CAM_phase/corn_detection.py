@@ -33,8 +33,8 @@ def corn_detection(cap):
     capimg = cv2.merge((h, s, v))
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
-        mask1 = cv2.inRange(capimg, (0, 150, 180), (lower_hue, 255, 255)) #赤色フィルタ
-        mask2 = cv2.inRange(capimg, (upper_hue, 150, 180), (180, 255, 255)) #赤色フィルタ
+    mask1 = cv2.inRange(capimg, (0, 150, 180), (lower_hue, 255, 255)) #赤色フィルタ
+    mask2 = cv2.inRange(capimg, (upper_hue, 150, 180), (180, 255, 255)) #赤色フィルタ
     capimg = cv2.bitwise_or(mask1, mask2)
     shapeh, shapew = capimg.shape
 
