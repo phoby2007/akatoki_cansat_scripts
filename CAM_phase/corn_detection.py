@@ -41,6 +41,13 @@ def corn_detection(cap):
     M = cv2.moments(capimg)
     print(M["m00"]/255, shapeh * shapew * detect_threshold) # デバッグ用 - コーン検出の閾値設定に役立てる
 
+    hsv = cv2.cvtColor(cap, cv2.COLOR_BGR2HSV)
+
+    cy = hsv.shape[0] // 2
+    cx = hsv.shape[1] // 2
+
+    print(hsv[cy, cx])
+
     if M["m00"] / 255 > shapeh * shapew * detect_threshold: # コーン検出閾値設定 - 要調整
         cx = int(M["m10"] / M["m00"])
         cy = int(M["m01"] / M["m00"])
