@@ -2,7 +2,7 @@
 
 import cv2
 import numpy as np
-from picamera2 import Picamera2
+from picamera import Picamera
 
 resize_rate = 0.10
 detect_threshold = 0.008  # コーン検出の閾値（要調整）
@@ -47,8 +47,7 @@ def corn_detection(cap):
     return cx, cy, capstatus
 
 if __name__ == "__main__":
-    camera = Picamera2()
-    camera.configure(camera.create_video_configuration())
+    camera = Picamera()
     camera.start()
 
     while True:
