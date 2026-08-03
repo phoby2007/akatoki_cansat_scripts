@@ -56,7 +56,6 @@ if __name__ == "__main__":
         x, y, status = corn_detection(camera.capture_array()) # カメラから画像を取得してコーン検出
         print(f"Cone detected at: ({x}, {y})")
         key = cv2.waitKey(1) #lp stop
-        cv2.imshow("Camera Feed", camera.capture_array()) # カメラ映像を表示
         if key == 27:
             break
     camera.stop()
