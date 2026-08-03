@@ -4,7 +4,7 @@ import numpy as np
 resize_rate = 0.10
 detect_threshold = 0.001  # コーン検出の閾値（要調整）
 lower_hue = 150  # 下限
-upper_hue = 179  # 上限
+upper_hue = 180  # 上限
 
 def cap_to_fog(src, ratio = 0.1):   
     resized = cv2.resize(src, None, fx = ratio, fy = ratio, interpolation = cv2.INTER_NEAREST)
