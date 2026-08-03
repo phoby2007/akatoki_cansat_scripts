@@ -5,7 +5,7 @@ import numpy as np
 from picamera2 import Picamera2
 
 resize_rate = 0.10
-detect_threshold = 0.008  # コーン検出の閾値（要調整）
+detect_threshold = 0.001  # コーン検出の閾値（要調整）
 lower_hue = 50  # 下限
 upper_hue = 150  # 上限
 
