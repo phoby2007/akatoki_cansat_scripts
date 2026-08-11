@@ -7,8 +7,8 @@ import time
 
 resize_rate = 0.10
 detect_threshold = 0.0001  # コーン検出の閾値（要調整）
-lower_hue = 15  # 下限
-upper_hue = 165  # 上限
+lower_hue = 11  # 下限
+upper_hue = 169  # 上限
 
 def cap_to_fog(src, ratio = 0.1):   
     resized = cv2.resize(src, None, fx = ratio, fy = ratio, interpolation = cv2.INTER_NEAREST)
@@ -33,8 +33,8 @@ def corn_detection(cap):
     capimg = cv2.merge((h, s, v))
 
     #capimg = cap_to_fog(capimg, resize_rate) # fog effect 必要に応じて
-    mask1 = cv2.inRange(capimg, (0, 0, 0), (lower_hue, 255, 255)) #赤色フィルタ
-    mask2 = cv2.inRange(capimg, (upper_hue, 0, 0), (180, 255, 255)) #赤色フィルタ
+    mask1 = cv2.inRange(capimg, (0, 117, 104), (lower_hue, 255, 255)) #赤色フィルタ
+    mask2 = cv2.inRange(capimg, (upper_hue, 117, 104), (179, 255, 255)) #赤色フィルタ
     capimg = cv2.bitwise_or(mask1, mask2)
     shapeh, shapew = capimg.shape
 
