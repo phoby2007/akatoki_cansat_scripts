@@ -74,7 +74,11 @@ if __name__ == "__main__":
     #        if cx is not None and cy is not None:
     #            capcp = cv2.circle(capcp, (cx, cy), 10, (0, 255, 0), -1)
     #        cv2.imshow("Detected Cone", capcp)
-            cv2.imshow("Mask", cap)
+            try:
+                cv2.imshow("Mask", cap)
+            except cv2.error as e:
+                print(f"Error displaying image: {e}")
+            time.sleep(0.1)  # Adjust the sleep time as needed
         except Exception as e:
             print(f"Error during processing: {e}")
         finally:
