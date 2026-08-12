@@ -11,9 +11,9 @@ class Camera:
         except Exception as e:
             print(f"Error initializing camera: {e}")
             self.picam2 = None
-        self.hsv_min1 = np.array([0, 117, 104])
+        self.hsv_min1 = np.array([0, 180, 104])
         self.hsv_max1 = np.array([11, 255, 255])
-        self.hsv_min2 = np.array([169, 117, 104])
+        self.hsv_min2 = np.array([169, 180, 104])
         self.hsv_max2 = np.array([179, 255, 255])
     def start(self):
         if self.picam2 is not None:
@@ -52,11 +52,14 @@ class Camera:
             largest_contour = max(counts, key=cv2.contourArea)
             area = cv2.contourArea(largest_contour)
             print(f"Largest contour area: {area}")  # デバッグ用 - 面積を表示
-            M = cv2.moments(largest_contour)
-            if M["m00"] > 0:
-                cx = int(M["m10"] / M["m00"])
-                cy = int(M["m01"] / M["m00"])
-                return cx, cy, image
+            if area < 500:
+                return None, None, image
+            else:
+                M = cv2.moments(largest_contour)
+                if M["m00"] > 0:
+                    cx = int(M["m10"] / M["m00"])
+                    cy = int(M["m01"] / M["m00"])
+                    return cx, cy, image
         return None, None, image
 if __name__ == "__main__":
     camera = Camera()
