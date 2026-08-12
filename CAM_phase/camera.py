@@ -72,10 +72,10 @@ class Camera:
                 else:
                     print("Corn is in the center")
                     camera_order = 1
-            else:
-                cx, cy = None, None
-                print("No Corn detected, Searching for Corn")
-                camera_order = 0
+        else:
+            cx, cy = None, None
+            print("No Corn detected, Searching for Corn")
+            camera_order = 0
         return cx, cy, image, camera_order
 if __name__ == "__main__":
     camera = Camera()
