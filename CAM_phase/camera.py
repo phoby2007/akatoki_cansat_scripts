@@ -42,6 +42,7 @@ class Camera:
         v = clahe.apply(v)
         return cv2.merge((h, s, v))
     def get_cone_position(self, image):
+        camera_order = 0
         #モルフォロジー変換
         kernel = np.ones((5,5), np.uint8)
         image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
@@ -51,16 +52,29 @@ class Camera:
         if counts:
             largest_contour = max(counts, key=cv2.contourArea)
             area = cv2.contourArea(largest_contour)
+            cap_cx = image.shape[1] // 2
             print(f"Largest contour area: {area}")  # デバッグ用 - 面積を表示
-            if area < 500:
-                return None, None, image
+            M = cv2.moments(largest_contour)
+            if M["m00"] > 500:
+                cx = int(M["m10"] / M["m00"])
+                cy = int(M["m01"] / M["m00"])
+                if area > 150000:
+                    print("Close enough to Corn, stopping")
+                    camera_order = 4
+                elif cx < cap_cx - 50:
+                    print("Corn is on the left")
+                    camera_order = 3
+                elif cx > cap_cx + 50:
+                    print("Corn is on the right")
+                    camera_order = 2
+                else:
+                    print("Corn is in the center")
+                    camera_order = 1
             else:
-                M = cv2.moments(largest_contour)
-                if M["m00"] > 0:
-                    cx = int(M["m10"] / M["m00"])
-                    cy = int(M["m01"] / M["m00"])
-                    return cx, cy, image
-        return None, None, image
+                cx, cy = None, None
+                print("No Corn detected, Searching for Corn")
+                camera_order = 0
+        return cx, cy, image, camera_order
 if __name__ == "__main__":
     camera = Camera()
     camera.start()
@@ -73,7 +87,7 @@ if __name__ == "__main__":
                 break
             cap = camera.histogram_equalization(cap)
             cap = camera.detect_cone(cap)
-            cx, cy, cap = camera.get_cone_position(cap)
+            cx, cy, cap, camera_order = camera.get_cone_position(cap)
             if cx is not None and cy is not None:
                 capcp = cv2.circle(capcp, (cx, cy), 10, (0, 255, 0), -1)
             cv2.imshow("Detected Cone", capcp)
@@ -82,7 +96,7 @@ if __name__ == "__main__":
             except cv2.error as e:
                 print(f"Error displaying image: {e}")
             cv2.waitKey(1)  # Adjust the wait time as needed
-            print(cx, cy)
+            print(cx, cy, camera_order)
         except Exception as e:
             print(f"Error during processing: {e}")
     camera.release()
