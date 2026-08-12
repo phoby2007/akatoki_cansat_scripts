@@ -43,6 +43,8 @@ class Camera:
         return cv2.merge((h, s, v))
     def get_cone_position(self, image):
         camera_order = 0
+        cx = None
+        cy = None
         #モルフォロジー変換
         kernel = np.ones((5,5), np.uint8)
         image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
