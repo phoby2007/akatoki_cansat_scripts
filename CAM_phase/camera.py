@@ -60,18 +60,22 @@ class Camera:
         return None, None, image
 if __name__ == "__main__":
     while True:
+        camera = Camera()
+        camera.start()
         try:
-            camera = Camera()
-            camera.start()
             cap = camera.capture_image()
             capcp = cap.copy()
+            if cap is None:
+                print("Failed to capture image. Exiting.")
+                break
             cap = camera.histogram_equalization(cap)
             cap = camera.detect_cone(cap)
             cx, cy, cap = camera.get_cone_position(cap)
             capcp = cv2.circle(capcp, (cx, cy), 10, (0, 255, 0), -1)
             cv2.imshow("Detected Cone", capcp)
             cv2.imshow("Mask", cap)
-            cv2.waitKey(0)
         except Exception as e:
             print(f"Error during processing: {e}")
+        finally:
+            camera.release()
             cv2.destroyAllWindows()
