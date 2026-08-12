@@ -71,7 +71,8 @@ if __name__ == "__main__":
             cap = camera.histogram_equalization(cap)
             cap = camera.detect_cone(cap)
             cx, cy, cap = camera.get_cone_position(cap)
-            capcp = cv2.circle(capcp, (cx, cy), 10, (0, 255, 0), -1)
+            if cx is not None and cy is not None:
+                capcp = cv2.circle(capcp, (cx, cy), 10, (0, 255, 0), -1)
             cv2.imshow("Detected Cone", capcp)
             cv2.imshow("Mask", cap)
         except Exception as e:
