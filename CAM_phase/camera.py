@@ -31,7 +31,7 @@ class Camera:
         if self.picam2 is not None:
             self.picam2.stop()
     def detect_cone(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         mask1 = cv2.inRange(image, self.hsv_min1, self.hsv_max1)
         mask2 = cv2.inRange(image, self.hsv_min2, self.hsv_max2)
         image = cv2.bitwise_or(mask1, mask2)
