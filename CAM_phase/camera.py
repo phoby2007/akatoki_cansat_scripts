@@ -59,9 +59,9 @@ class Camera:
                 return cx, cy, image
         return None, None, image
 if __name__ == "__main__":
+    camera = Camera()
+    camera.start()
     while True:
-        camera = Camera()
-        camera.start()
         try:
             cap = camera.capture_image()
             capcp = cap.copy()
